@@ -1,0 +1,51 @@
+# https://programmers.co.kr/learn/courses/30/lessons/77486
+
+from collections import defaultdict
+
+
+def solution(enroll, referral, seller, amount):
+    result = defaultdict(int) # 이익 결과 초기화
+    parent_of = {child: parent for child, parent in zip(enroll, referral)} # 부모 노드
+    
+    # 판매 순서대로 실시간 분배
+    for name, number in zip(seller, amount):
+        # 자신의 수익 계산
+        income = number * 100
+        fee = income // 10
+        result[name] += income # 순이익
+        
+        # 그 위로 center까지 분배
+        while True:
+            result[name] -= fee
+            
+            parent = parent_of[name]
+            # 종료 조건1
+            if parent == "-":
+                break
+            result[parent] += fee
+            
+            # 종료 조건 2
+            if fee < 10:
+                break
+            name = parent
+            fee //= 10
+    
+    return [result[name] for name in enroll]
+    
+    
+"""
+[문제 분석]
+문제 자체는 쉽지만, 문제를 꼼꼼히 읽어야 하는 문제이다.
+오답의 주요 요인은 판매 순서대로 분배해야하는 점일 것이다.
+이를 간과했으면 아마 이익 결과인 result를 초기화할 때 각각의 income을 넣어주어 틀렸을 것이다.
+
+문제가 불친절하다고 여길 수도 있지만, 오히려 그림으로 친절하게 잘 나타나있기도 하다.
+
+[while True]
+while문은 크게 세 가지 형태로 사용할 수 있다.
+- while cond: 종료 조건을 처음에 명시
+- do~while cond: 종료 조건을 마지막에 명시 (파이썬에는 없음)
+- while True: 종료 조건을 내부에 명시
+종료 조건을 굳이 처음에 쓰려고 고집하지 않는 것이 좋은 것 같다.
+내부에 쓰는 것이 생각하기에도, 읽기에도 편할 수 있다.
+"""
