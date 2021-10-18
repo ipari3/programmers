@@ -1,6 +1,5 @@
 # https://programmers.co.kr/learn/courses/30/lessons/77484
 
-
 def solution(lottos, win_nums):
     win_nums = set(win_nums)
     num_zeros = 0
