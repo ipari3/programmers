@@ -1,0 +1,30 @@
+-- https://programmers.co.kr/learn/courses/30/lessons/77487
+
+SELECT *
+FROM PLACES
+WHERE HOST_ID IN (
+    SELECT HOST_ID
+    FROM PLACES
+    GROUP BY HOST_ID
+    HAVING COUNT(HOST_ID) > 1
+)
+ORDER BY ID ASC
+
+
+/*
+[서브 쿼리]
+SQL(메인 쿼리) 속의 SQL이다.
+- 괄호로 감싸주어야 하며, ORDER BY를 사용할 수 없다.
+- 메인 쿼리 실행 전에 한 번만 수행된다.
+
+WHERE절에서의 사용 예시는 다음과 같다.
+우선 서브 쿼리 출력의 행 개수에 따라 나눌 수 있다.
+- 단일행: WHERE COL1 = (...)
+- 다중행: WHERE COL1 IN (...)
+조건의 열 개수가 여러 개면 다음과 같다.
+- 다중열: WHERE (COL1, COL2) IN (...)
+
+WHERE절 뿐 아니라 SELECT, FROM, HAVING, ORDER BY 등에서도 사용할 수 있다.
+- SELECT: 출력할 열을 조작하여 만드는 등에 이용된다.
+- FROM: inline view라고도 하며, 동적으로 테이블을 생성한다.
+*/
